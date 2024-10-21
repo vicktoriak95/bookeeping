@@ -99,5 +99,3 @@ Every summer after that
 
 # Call the function and generate the Excel
 df = create_books_excel(hebrew_text)
-
-pd.DataFrame.to_excel( "books.xls", df )
