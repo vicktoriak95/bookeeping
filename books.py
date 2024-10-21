@@ -1,54 +1,7 @@
 import pandas as pd
 
-def create_books_excel(hebrew_text, filename="books_list.xlsx"):
-    # Split the input text by new lines
-    lines = hebrew_text.split('\n')
-    
-    # Prepare lists to store the data
-    books = []
-    authors = []
-    availability = []
-    
-    # Iterate through each line
-    for line in lines:
-        if line.startswith("עברית") or line.startswith("לא עברית") or line.startswith("בקינדל") or line.startswith("רוסית") or line.startswith("בקשיח"):
-            # Skip headers
-            continue
-        
-        # Check for specific availability indicators
-        if "יש למטה" in line:
-            available = "Available below"
-            line = line.replace(" - יש למטה", "")
-        elif "✅" in line:
-            available = "Read"
-            line = line.replace(" ✅", "")
-        else:
-            available = "Not available"
-
-        # Split the line into book title and author
-        if " - " in line:
-            book, author = line.split(" - ", 1)
-        else:
-            book, author = line, ""
-        
-        # Append the data to lists
-        books.append(book.strip())
-        authors.append(author.strip())
-        availability.append(available)
-    
-    # Create a DataFrame
-    df = pd.DataFrame({
-        'Book': books,
-        'Author': authors,
-        'Availability': availability
-    })
-    
-    # Save to Excel
-    df.to_excel(filename, index=False)
-    return df
-
 # Example input (the text from the user)
-hebrew_text = """
+BOOKS_LIST = """
 לא עברית
 אנה קרנינה - לב טולסטוי ✅
 העולם של אתמול - סטפן צוויג ✅
@@ -97,5 +50,57 @@ Every summer after that
 חיים קטנים
 """
 
-# Call the function and generate the Excel
-df = create_books_excel(hebrew_text)
+def create_books_excel( hebrew_text, filename = "books_list.xlsx" ):
+    # Split the input text by new lines
+    lines = hebrew_text.split('\n')
+
+    # Prepare lists to store the data
+    books = []
+    authors = []
+    availability = []
+
+    # Iterate through each line
+    for line in lines:
+        if line.startswith("עברית") or line.startswith("לא עברית") or line.startswith("בקינדל") or line.startswith("רוסית") or line.startswith("בקשיח"):
+            # Skip headers
+            continue
+
+        # Check for specific availability indicators
+        if "יש למטה" in line:
+            available = "Available below"
+            line = line.replace( " - יש למטה", "" )
+        elif "✅" in line:
+            available = "Read"
+            line = line.replace( " ✅", "" )
+        else:
+            available = "Not available"
+
+        # Split the line into book title and author
+        if " - " in line:
+            book, author = line.split( " - ", 1 )
+        else:
+            book, author = line, ""
+
+        # Append the data to lists
+        books.append( book.strip() )
+        authors.append( author.strip() )
+        availability.append(available)
+
+    # Create a DataFrame
+    df = pd.DataFrame({
+        'Book': books,
+        'Author': authors,
+        'Availability': availability
+    })
+
+    # Save to Excel
+    df.to_excel(filename, index=False)
+    return df
+
+
+def main():
+    # Call the function and generate the Excel
+    df = create_books_excel( BOOKS_LIST )
+
+if __name__ == "__main__":
+    main()
