@@ -1,4 +1,5 @@
 import pandas as pd
+import openai
 
 # Example input (the text from the user)
 BOOKS_LIST = """
@@ -96,6 +97,14 @@ def create_books_excel( hebrew_text, filename = "books_list.xlsx" ):
     # Save to Excel
     df.to_excel(filename, index=False)
     return df
+
+def openaiApiTest():
+    hebrewText = "הארי פוטר"
+    prompt = "Please translate the following Hebrew text to English: %s" % hebrewText
+
+    # Send request to OpenAI API
+    response = openai.Completion.create( engine = "text-davinci-003", prompt = prompt, max_tokens = 100 )
+
 
 
 def main():
